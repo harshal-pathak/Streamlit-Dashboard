@@ -5,10 +5,10 @@ from PIL import Image
 import plotly.express as px
 import plotly.graph_objects as go
 
-df = pd.read_excel(r"C:\Users\HARSHAL\Downloads\Adidas.xlsx")
+df = pd.read_excel(r"Adidas.xlsx")
 st.set_page_config(layout="wide")
 st.markdown('<style>div.block-container{padding-top:1rem;}</style>', unsafe_allow_html=True)
-image = Image.open(r"C:\Users\HARSHAL\Downloads\adidas-logo.jpg")
+image = Image.open(r"Adidas.xlsx")
 
 col1, col2 = st.columns([0.1,0.9])
 with col1:
