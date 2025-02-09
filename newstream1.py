@@ -5,10 +5,10 @@ from PIL import Image
 import plotly.express as px
 import plotly.graph_objects as go
 
-df = pd.read_excel(r"./Adidas.xlsx")
+df = pd.read_excel(r"./sales.xlsx")
 st.set_page_config(layout="wide")
 st.markdown('<style>div.block-container{padding-top:1rem;}</style>', unsafe_allow_html=True)
-image = Image.open(r"./adidas-logo.jpg")
+image = Image.open(r"./image.png")
 
 col1, col2 = st.columns([0.1,0.9])
 with col1:
@@ -22,7 +22,7 @@ html_title = """
     border-radius:6px;
     }
     </style>
-    <center><h1 class="title-test">Adidas Interactive Sales Dashboard</h1></center>"""
+    <center><h1 class="title-test">Sales Interactive Dashboard</h1></center>"""
 with col2:
     st.markdown(html_title, unsafe_allow_html=True)
 
@@ -33,18 +33,18 @@ with col3:
 
 with col4:
     fig = px.bar(df, x = "Retailer", y = "TotalSales", labels={"TotalSales" : "Total Sales {$}"},
-                 title = "Total Sales by Retailer", hover_data=["TotalSales"],
+                 title = "Total Sales from Retailers",
                  template="gridon",height=500)
     st.plotly_chart(fig,use_container_width=True)
 
 _, view1, dwn1, view2, dwn2 = st.columns([0.15,0.20,0.20,0.20,0.20])
 with view1:
-    expander = st.expander("Retailer wise Sales")
+    expander = st.expander("Retailers Sales")
     data = df[["Retailer","TotalSales"]].groupby(by="Retailer")["TotalSales"].sum()
     expander.write(data)
 with dwn1:
-    st.download_button("Get Data", data = data.to_csv().encode("utf-8"),
-                       file_name="RetailerSales.csv", mime="text/csv")
+    st.download_button("View Data", data = data.to_csv().encode("utf-8"),
+                       file_name="Retailer.csv", mime="text/csv")
 
 df["Month_Year"] = df["InvoiceDate"].dt.strftime("%b'%y")
 result = df.groupby(by = df["Month_Year"])["TotalSales"].sum().reset_index()
@@ -59,8 +59,8 @@ with view2:
     data = result
     expander.write(data)
 with dwn2:
-    st.download_button("Get Data", data = result.to_csv().encode("utf-8"),
-                       file_name="Monthly Sales.csv", mime="text/csv")
+    st.download_button("View Data", data = result.to_csv().encode("utf-8"),
+                       file_name="Monthsales.csv", mime="text/csv")
     
 st.divider()
 
@@ -84,11 +84,11 @@ with col6:
 
 _, view3, dwn3 = st.columns([0.5,0.45,0.45])
 with view3:
-    expander = st.expander("View Data for Sales by Units Sold")
+    expander = st.expander("Table for Sales by Units Sold")
     expander.write(result1)
 with dwn3:
-    st.download_button("Get Data", data = result1.to_csv().encode("utf-8"), 
-                       file_name = "Sales_by_UnitsSold.csv", mime="text/csv")
+    st.download_button("View Data", data = result1.to_csv().encode("utf-8"), 
+                       file_name = "SalesUnitsSold.csv", mime="text/csv")
 st.divider()
 
 _, col7 = st.columns([0.1,1])
@@ -107,23 +107,23 @@ fig4 = px.treemap(treemap, path = ["Region","City"], values = "TotalSales",
 fig4.update_traces(textinfo="label+value")
 
 with col7:
-    st.subheader(":point_right: Total Sales by Region and City in Treemap")
+    st.subheader("Total Sales by Region and City in Treemap")
     st.plotly_chart(fig4,use_container_width=True)
 
 _, view4, dwn4 = st.columns([0.5,0.45,0.45])
 with view4:
     result2 = df[["Region","City","TotalSales"]].groupby(by=["Region","City"])["TotalSales"].sum()
-    expander = st.expander("View data for Total Sales by Region and City")
+    expander = st.expander("View data - Sales by Region and City")
     expander.write(result2)
 with dwn4:
-    st.download_button("Get Data", data = result2.to_csv().encode("utf-8"),
-                                        file_name="Sales_by_Region.csv", mime="text.csv")
+    st.download_button("View Data", data = result2.to_csv().encode("utf-8"),
+                                        file_name="SalesRegion.csv", mime="text.csv")
 
 _,view5, dwn5 = st.columns([0.5,0.45,0.45])
 with view5:
     expander = st.expander("View Sales Raw Data")
     expander.write(df)
 with dwn5:
-    st.download_button("Get Raw Data", data = df.to_csv().encode("utf-8"),
-                       file_name = "SalesRawData.csv", mime="text/csv")
+    st.download_button("View Data", data = df.to_csv().encode("utf-8"),
+                       file_name = "RawData.csv", mime="text/csv")
 st.divider()
