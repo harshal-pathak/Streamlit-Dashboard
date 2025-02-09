@@ -4,8 +4,7 @@ import datetime
 from PIL import Image
 import plotly.express as px
 import plotly.graph_objects as go
-print("Hello Learners")
-# reading the data from excel file
+
 df = pd.read_excel(r"C:\Users\HARSHAL\Downloads\Adidas.xlsx")
 st.set_page_config(layout="wide")
 st.markdown('<style>div.block-container{padding-top:1rem;}</style>', unsafe_allow_html=True)
@@ -67,7 +66,6 @@ st.divider()
 
 result1 = df.groupby(by="State")[["TotalSales","UnitsSold"]].sum().reset_index()
 
-# add the units sold as a line chart on a secondary y-axis
 fig3 = go.Figure()
 fig3.add_trace(go.Bar(x = result1["State"], y = result1["TotalSales"], name = "Total Sales"))
 fig3.add_trace(go.Scatter(x=result1["State"], y = result1["UnitsSold"], mode = "lines",
